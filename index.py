@@ -31,17 +31,17 @@ def load_user(user_id):
     return None
 
 
-# admin = user.find_user({'role': 'admin'})
-# if not admin:
-#     user.create_user({
-#             'email': 'aalam.manjoor718@gmail.com', 
-#             'password': hash_password('password'), 
-#             'mobile': '9828688097', 
-#             'name': 'Manzoor Aalam',
-#             'role': 'admin',
-#             'createdAt': datetime.datetime.now(),
-#             'updatedAt': datetime.datetime.now()
-#         })
+admin = user.find_user({'role': 'admin'})
+if not admin:
+    user.create_user({
+            'email': 'aalam.manjoor718@gmail.com', 
+            'password': hash_password('password'), 
+            'mobile': '9828688097', 
+            'name': 'Manzoor Aalam',
+            'role': 'admin',
+            'createdAt': datetime.datetime.now(),
+            'updatedAt': datetime.datetime.now()
+        })
 
 
 # @app.route('/login', methods=['GET', 'POST'])
