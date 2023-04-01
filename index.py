@@ -1,47 +1,47 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
-# from utils.helper import hash_password
-# import datetime
+from utils.helper import hash_password
+import datetime
 # import ast
-# from src.services.db import User
-# import bson
-# from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-# import bcrypt
+from src.services.db import User
+import bson
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+import bcrypt
 
 
 user = User()
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = "manaya-finserve"
-# login_manager = LoginManager()
-# login_manager.init_app(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
-# class User_(UserMixin):
-#     def __init__(self, id, name, role):
-#         self.id = id
-#         self.username = name
-#         self.role = role
+class User_(UserMixin):
+    def __init__(self, id, name, role):
+        self.id = id
+        self.username = name
+        self.role = role
 
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     user_ = user.find_user({"_id": bson.ObjectId(user_id)})
-#     if user_:
-#         return User_(user_["_id"], user_['name'], user_['role'])
-#     return None
+@login_manager.user_loader
+def load_user(user_id):
+    user_ = user.find_user({"_id": bson.ObjectId(user_id)})
+    if user_:
+        return User_(user_["_id"], user_['name'], user_['role'])
+    return None
 
 
-# admin = user.find_user({'role': 'admin'})
-# if not admin:
-#     user.create_user({
-#             'email': 'aalam.manjoor718@gmail.com', 
-#             'password': hash_password('password'), 
-#             'mobile': '9828688097', 
-#             'name': 'Manzoor Aalam',
-#             'role': 'admin',
-#             'createdAt': datetime.datetime.now(),
-#             'updatedAt': datetime.datetime.now()
-#         })
+admin = user.find_user({'role': 'admin'})
+if not admin:
+    user.create_user({
+            'email': 'aalam.manjoor718@gmail.com', 
+            'password': hash_password('password'), 
+            'mobile': '9828688097', 
+            'name': 'Manzoor Aalam',
+            'role': 'admin',
+            'createdAt': datetime.datetime.now(),
+            'updatedAt': datetime.datetime.now()
+        })
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -71,9 +71,9 @@ def login():
         return render_template('login.html')
 
 
-# @app.route('/home', methods=['GET', 'POST'])
-# def home():
-#     return render_template('home.html', user=current_user)
+@app.route('/home', methods=['GET', 'POST'])
+def home():
+    return render_template('home.html', user=current_user)
 
 
 # @app.route('/employees', methods=['GET', 'POST'])
