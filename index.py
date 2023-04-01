@@ -1,11 +1,11 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
-from utils.helper import hash_password
-import datetime
-import ast
-from src.services.db import User
-import bson
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-import bcrypt
+# from utils.helper import hash_password
+# import datetime
+# import ast
+# from src.services.db import User
+# import bson
+# from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+# import bcrypt
 
 
 user = User()
