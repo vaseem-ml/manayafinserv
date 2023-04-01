@@ -1,1 +1,8 @@
-Flask==2.2.2
+pymongo
+pymongo[srv]
+Jinja2
+bcrypt
+flask_login
+pyjwt
+Flask
+requests
