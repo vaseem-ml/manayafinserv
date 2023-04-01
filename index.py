@@ -12,23 +12,23 @@ user = User()
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = "manaya-finserve"
-# login_manager = LoginManager()
-# login_manager.init_app(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
-# class User_(UserMixin):
-#     def __init__(self, id, name, role):
-#         self.id = id
-#         self.username = name
-#         self.role = role
+class User_(UserMixin):
+    def __init__(self, id, name, role):
+        self.id = id
+        self.username = name
+        self.role = role
 
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     user_ = user.find_user({"_id": bson.ObjectId(user_id)})
-#     if user_:
-#         return User_(user_["_id"], user_['name'], user_['role'])
-#     return None
+@login_manager.user_loader
+def load_user(user_id):
+    user_ = user.find_user({"_id": bson.ObjectId(user_id)})
+    if user_:
+        return User_(user_["_id"], user_['name'], user_['role'])
+    return None
 
 
 # admin = user.find_user({'role': 'admin'})
