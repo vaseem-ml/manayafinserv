@@ -26,10 +26,13 @@
     <!-- BEGIN: Theme JS-->
     <script src="{{ url_for('static', filename='app-assets/js/core/app-menu.js') }}"></script>
     <script src="{{ url_for('static', filename='app-assets/js/core/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='app-assets/js/script.js') }}"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
     <script src="{{ url_for('static', filename='app-assets/js/scripts/pages/app-user-list.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
     <!-- END: Page JS-->
 
     <script>
@@ -41,7 +44,35 @@
                 });
             }
         })
+
+        
     </script>
+    {%- with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <script>
+            var flas_messages = '{{ message }}'
+            console.log('this is flas messages', flas_messages)
+            var msg = flas_messages.includes(':') ? flas_messages.split(':')[0]: flas_messages
+            var type = flas_messages.includes(':') ? flas_messages.split(':')[1]: 'success'
+            var isRtl = $('html').attr('data-textdirection') === 'rtl';
+            if(msg) {
+                setTimeout(function () {
+                toastr[type](
+                    String(msg),
+                    {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        rtl: isRtl
+                    }
+                    );
+                }, 10);
+            }
+            
+        </script>
+        {% endfor %}
+    {% endif %}
+{% endwith -%}
 </body>
 <!-- END: Body-->
 

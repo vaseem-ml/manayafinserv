@@ -29,6 +29,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/css/themes/dark-layout.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/css/themes/bordered-layout.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/css/themes/semi-dark-layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/vendors/css/extensions/toastr.min.css') }}">
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
@@ -38,6 +39,7 @@
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    
     <!-- END: Custom CSS-->
 
 </head>
@@ -129,10 +131,26 @@
         <div class="shadow-bottom"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li class=" nav-item"><a class="d-flex align-items-center" href="form-repeater.html"><i data-feather="rotate-cw"></i><span class="menu-title text-truncate" data-i18n="Form Repeater">Form Repeater</span></a>
+                <li class=" nav-item" id="home">
+                    <a class="d-flex align-items-center" href="/home">
+                        <i data-feather="home"></i>
+                        <span class="menu-title text-truncate" data-i18n="home">Home</span>
+                    </a>
                 </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="table-bootstrap.html"><i data-feather="server"></i><span class="menu-title text-truncate" data-i18n="Table">Table</span></a>
+                <li class=" nav-item" id="reports">
+                    <a class="d-flex align-items-center" href="/reports">
+                        <i data-feather="home"></i>
+                        <span class="menu-title text-truncate" data-i18n="home">Reports</span>
+                    </a>
                 </li>
+                {% if user.role=='admin' %}
+                <li class=" nav-item" id="employees">
+                    <a class="d-flex align-items-center" href="/employees">
+                        <i data-feather='user'></i>
+                        <span class="menu-title text-truncate" data-i18n="employees">Employees</span>
+                    </a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>

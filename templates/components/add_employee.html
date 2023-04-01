@@ -1,0 +1,60 @@
+<div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+    <div class="modal-dialog">
+        <form class="add-new-user modal-content pt-0" novalidate="novalidate" action="/add-employee" method="POST">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" id="exampleModalLabel">New Employee</h5>
+            </div>
+            <div class="modal-body flex-grow-1">
+                <div class="form-group">
+                    <label class="form-label" for="basic-icon-default-fullname">First Name</label>
+                    <input type="text" class="form-control dt-full-name"  placeholder="Enter your first name" name="first_name"  />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="basic-icon-default-uname">Last Name</label>
+                    <input type="text" id="basic-icon-default-uname" class="form-control dt-uname" placeholder="Enter your last name"  name="last_name" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="basic-icon-default-email">Email</label>
+                    <input type="text" id="basic-icon-default-email" class="form-control dt-email" placeholder="Enter your email"name="email" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="basic-icon-default-uname">Mobile</label>
+                    <input type="text" id="basic-icon-default-uname" class="form-control dt-uname" placeholder="Enter your last name"  name="mobile" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="user-role">Designation</label>
+                    <select id="user-role" class="form-control" name="designation">
+                        <option value="Team Leader">Team Leader</option>
+                        <option value="Sales Executive">Sales Executive</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="basic-icon-default-fullname">Date of birth</label>
+                    <input type="date" class="form-control dt-full-name" placeholder="Expiry Date" name="dob" >
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="user-role">Gender</label>
+                    <select id="user-role" class="form-control" name="gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="user-role">Active</label>
+                    <select  class="form-control" name="status">
+                        <option value=1>Yes</option>
+                        <option value=0>No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="basic-icon-default-fullname">Password</label>
+                    <input type="text" class="form-control dt-full-name" placeholder="Enter client password" name="password" >
+                </div>
+
+                <button type="submit" class="btn btn-primary mr-1 data-submit">Submit</button>
+                <button type="reset" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
