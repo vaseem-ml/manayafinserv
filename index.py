@@ -76,60 +76,60 @@ def home():
     return render_template('home.html', user=current_user)
 
 
-# @app.route('/employees', methods=['GET', 'POST'])
-# def employees():
-#     cond = { 'role': 'employee'}
-#     if request.method == 'POST':
-#         search = request.form["search"]
-#         if search:
-#             cond['search'] = search
+@app.route('/employees', methods=['GET', 'POST'])
+def employees():
+    cond = { 'role': 'employee'}
+    if request.method == 'POST':
+        search = request.form["search"]
+        if search:
+            cond['search'] = search
 
-#     users = user.get_users(cond)
-#     return render_template('employees.html', users=users, user=current_user)
-
-
-# @app.route('/reports', methods=['GET', 'POST'])
-# def reports():
-#     return render_template('reports.html', user=current_user)
+    users = user.get_users(cond)
+    return render_template('employees.html', users=users, user=current_user)
 
 
+@app.route('/reports', methods=['GET', 'POST'])
+def reports():
+    return render_template('reports.html', user=current_user)
 
-# @app.route('/add-employee', methods=['POST'])
-# def add_employee():
-#     first_name = request.form["first_name"]
-#     last_name = request.form["last_name"]
-#     designation = request.form["designation"]
-#     dob = request.form["dob"]
-#     email = request.form["email"]
-#     gender = request.form["gender"]
-#     status = request.form["status"]
-#     password = request.form["password"]
-#     if not password:
-#         flash('password is empty:error',)
-#         return redirect(url_for('employees'))
 
-#     hashed_password = hash_password(password)
-#     mobile = request.form["mobile"]
-#     user_ = user.find_user({'email': email})
-#     if user_:
-#         flash('Email alreay exists. Try with other email!!!:error',)
-#         return redirect(url_for('employees'))
-#     data = {
-#         'first_name': first_name,
-#         'last_name': last_name,
-#         'designation': designation,
-#         'dob': dob,
-#         'gender': gender,
-#         'status': int(status),
-#         'role': 'employee',
-#         'mobile': mobile,
-#         'password': hashed_password,
-#         'email': email,
-#         'createdAt': datetime.datetime.now(), 
-#         'updatedAt': datetime.datetime.now(), 
-#     }
-#     user.create_user(data)
-#     return redirect(url_for("employees"))
+
+@app.route('/add-employee', methods=['POST'])
+def add_employee():
+    first_name = request.form["first_name"]
+    last_name = request.form["last_name"]
+    designation = request.form["designation"]
+    dob = request.form["dob"]
+    email = request.form["email"]
+    gender = request.form["gender"]
+    status = request.form["status"]
+    password = request.form["password"]
+    if not password:
+        flash('password is empty:error',)
+        return redirect(url_for('employees'))
+
+    hashed_password = hash_password(password)
+    mobile = request.form["mobile"]
+    user_ = user.find_user({'email': email})
+    if user_:
+        flash('Email alreay exists. Try with other email!!!:error',)
+        return redirect(url_for('employees'))
+    data = {
+        'first_name': first_name,
+        'last_name': last_name,
+        'designation': designation,
+        'dob': dob,
+        'gender': gender,
+        'status': int(status),
+        'role': 'employee',
+        'mobile': mobile,
+        'password': hashed_password,
+        'email': email,
+        'createdAt': datetime.datetime.now(), 
+        'updatedAt': datetime.datetime.now(), 
+    }
+    user.create_user(data)
+    return redirect(url_for("employees"))
 
 
 
