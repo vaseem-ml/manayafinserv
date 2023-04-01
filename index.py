@@ -12,63 +12,63 @@ user = User()
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = "manaya-finserve"
-login_manager = LoginManager()
-login_manager.init_app(app)
+# login_manager = LoginManager()
+# login_manager.init_app(app)
 
 
-class User_(UserMixin):
-    def __init__(self, id, name, role):
-        self.id = id
-        self.username = name
-        self.role = role
+# class User_(UserMixin):
+#     def __init__(self, id, name, role):
+#         self.id = id
+#         self.username = name
+#         self.role = role
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    user_ = user.find_user({"_id": bson.ObjectId(user_id)})
-    if user_:
-        return User_(user_["_id"], user_['name'], user_['role'])
-    return None
+# @login_manager.user_loader
+# def load_user(user_id):
+#     user_ = user.find_user({"_id": bson.ObjectId(user_id)})
+#     if user_:
+#         return User_(user_["_id"], user_['name'], user_['role'])
+#     return None
 
 
-admin = user.find_user({'role': 'admin'})
-if not admin:
-    user.create_user({
-            'email': 'aalam.manjoor718@gmail.com', 
-            'password': hash_password('password'), 
-            'mobile': '9828688097', 
-            'name': 'Manzoor Aalam',
-            'role': 'admin',
-            'createdAt': datetime.datetime.now(),
-            'updatedAt': datetime.datetime.now()
-        })
+# admin = user.find_user({'role': 'admin'})
+# if not admin:
+#     user.create_user({
+#             'email': 'aalam.manjoor718@gmail.com', 
+#             'password': hash_password('password'), 
+#             'mobile': '9828688097', 
+#             'name': 'Manzoor Aalam',
+#             'role': 'admin',
+#             'createdAt': datetime.datetime.now(),
+#             'updatedAt': datetime.datetime.now()
+#         })
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method=='POST':
-        email = request.form["email"]
-        if not email:
-            return jsonify({"error": "Please pass email address"}), 400
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if request.method=='POST':
+#         email = request.form["email"]
+#         if not email:
+#             return jsonify({"error": "Please pass email address"}), 400
 
-        user_ = user.find_user({'email': email})
-        if not user_:
-            flash('User not found:error',)
-            return redirect(url_for('login'))
+#         user_ = user.find_user({'email': email})
+#         if not user_:
+#             flash('User not found:error',)
+#             return redirect(url_for('login'))
 
-        password = request.form["password"]
-        hashed_password = user_["password"]
-        if not bcrypt.checkpw(password.encode("utf-8"), hashed_password.encode("utf-8")):
-            flash('Invalid username password combination:error')
-            return redirect(url_for('login'))
+#         password = request.form["password"]
+#         hashed_password = user_["password"]
+#         if not bcrypt.checkpw(password.encode("utf-8"), hashed_password.encode("utf-8")):
+#             flash('Invalid username password combination:error')
+#             return redirect(url_for('login'))
 
 
 
-        user_obj = User_(user_["_id"], user_['name'], user_['role'])
-        login_user(user_obj)
-        return redirect(url_for("home"))
-    if request.method=='GET':
-        return render_template('login.html')
+#         user_obj = User_(user_["_id"], user_['name'], user_['role'])
+#         login_user(user_obj)
+#         return redirect(url_for("home"))
+#     if request.method=='GET':
+#         return render_template('login.html')
 
 
 @app.route('/home', methods=['GET', 'POST'])
