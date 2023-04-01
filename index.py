@@ -44,31 +44,31 @@ if not admin:
         })
 
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method=='POST':
-#         email = request.form["email"]
-#         if not email:
-#             return jsonify({"error": "Please pass email address"}), 400
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method=='POST':
+        email = request.form["email"]
+        if not email:
+            return jsonify({"error": "Please pass email address"}), 400
 
-#         user_ = user.find_user({'email': email})
-#         if not user_:
-#             flash('User not found:error',)
-#             return redirect(url_for('login'))
+        user_ = user.find_user({'email': email})
+        if not user_:
+            flash('User not found:error',)
+            return redirect(url_for('login'))
 
-#         password = request.form["password"]
-#         hashed_password = user_["password"]
-#         if not bcrypt.checkpw(password.encode("utf-8"), hashed_password.encode("utf-8")):
-#             flash('Invalid username password combination:error')
-#             return redirect(url_for('login'))
+        password = request.form["password"]
+        hashed_password = user_["password"]
+        if not bcrypt.checkpw(password.encode("utf-8"), hashed_password.encode("utf-8")):
+            flash('Invalid username password combination:error')
+            return redirect(url_for('login'))
 
 
 
-#         user_obj = User_(user_["_id"], user_['name'], user_['role'])
-#         login_user(user_obj)
-#         return redirect(url_for("home"))
-#     if request.method=='GET':
-#         return render_template('login.html')
+        user_obj = User_(user_["_id"], user_['name'], user_['role'])
+        login_user(user_obj)
+        return redirect(url_for("home"))
+    if request.method=='GET':
+        return render_template('login.html')
 
 
 @app.route('/home', methods=['GET', 'POST'])
