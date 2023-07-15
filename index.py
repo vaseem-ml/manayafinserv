@@ -1,36 +1,36 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
 # from utils.helper import hash_password
-# import datetime
+import datetime
 # # import ast
-# from src.services.db import User, Client, Admin
-# import bson
+from src.services.db import User, Client, Admin
+import bson
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-# import bcrypt
+import bcrypt
 
 
-# user = User()
-# clients = Client()
-# admins = Admin()
+user = User()
+clients = Client()
+admins = Admin()
 
-# app = Flask(__name__, template_folder='templates')
-# app.secret_key = "manaya-finserve"
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-
-
-# class User_(UserMixin):
-#     def __init__(self, id, first_name, role):
-#         self.id = id
-#         self.username = first_name
-#         self.role = role
+app = Flask(__name__, template_folder='templates')
+app.secret_key = "manaya-finserve"
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     user_ = user.find_user({"_id": bson.ObjectId(user_id)})
-#     if user_:
-#         return User_(user_["_id"], user_['first_name'], user_['role'])
-#     return None
+class User_(UserMixin):
+    def __init__(self, id, first_name, role):
+        self.id = id
+        self.username = first_name
+        self.role = role
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    user_ = user.find_user({"_id": bson.ObjectId(user_id)})
+    if user_:
+        return User_(user_["_id"], user_['first_name'], user_['role'])
+    return None
 
 
 
@@ -262,7 +262,7 @@ def login():
 #     user.update_user({'_id': bson.ObjectId(_id)}, data)
 #     return redirect(url_for("employees"))
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
 
     
