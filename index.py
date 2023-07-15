@@ -262,7 +262,7 @@ def login():
 #     user.update_user({'_id': bson.ObjectId(_id)}, data)
 #     return redirect(url_for("employees"))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
 
     
