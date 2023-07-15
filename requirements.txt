@@ -1,4 +1,4 @@
-pymongo==4.4.1
+pymongo
 pymongo[srv]
 Jinja2
 bcrypt
