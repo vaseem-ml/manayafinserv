@@ -1,6 +1,6 @@
-from pymongo import MongoClient, GEOSPHERE
+from pymongo import MongoClient
 import os
-import bson
+
 
 #cC7WjuD5Dj3mz9l2
 client = MongoClient("mongodb+srv://vaseem:wK7COg790fEBik4n@cluster0.h7oo8j8.mongodb.net")
