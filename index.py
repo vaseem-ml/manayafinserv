@@ -28,8 +28,12 @@ class User_(UserMixin):
 @login_manager.user_loader
 def load_user(user_id):
     user_ = user.find_user({"_id": bson.ObjectId(user_id)})
+    if not user_:
+        user_ = admins.find_admin({"_id": bson.ObjectId(user_id)})
+    
     if user_:
         return User_(user_["_id"], user_['first_name'], user_['role'])
+    
     return None
 
 
@@ -71,7 +75,6 @@ def login():
         
         if role=='admin':
             user_ = admins.find_admin({'email': email})
-            print('this is admin', user_)
             if not user_:
                 flash('User not found:error',)
                 return redirect(url_for('login'))
@@ -88,14 +91,13 @@ def login():
         if not bcrypt.checkpw(password.encode("utf-8"), hashed_password.encode("utf-8")):
             flash('Invalid username password combination:error')
             return redirect(url_for('login'))
-
-
-
+        
+        print('everything going good++++++++++++++===============', user_)
 
         user_obj = User_(user_["_id"], user_['first_name'], user_['role'])
 
         login_user(user_obj)
-        print('now everything is logged in++++++++++=============', user_obj)
+        print('now everything is logged in++++++++++=============', current_user.username)
 
         return redirect(url_for("home"))
     if request.method=='GET':
@@ -104,10 +106,12 @@ def login():
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
+    print('Now home Running++++++++============')
     return render_template('home.html', user=current_user)
 
 
 @app.route('/employees', methods=['GET', 'POST'])
+@login_required
 def employees():
     cond = { 'role': 'employee'}
     if request.method == 'POST':
@@ -125,6 +129,7 @@ def employees():
 
 
 @app.route('/clients', methods=['GET', 'POST'])
+@login_required
 def get_clients():
     cond = { }
     if current_user.role=='employee':
@@ -151,6 +156,7 @@ def get_clients():
 
 
 @app.route('/add-client', methods=['POST'])
+@login_required
 def add_client():
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
@@ -262,7 +268,7 @@ def edit_employee():
     user.update_user({'_id': bson.ObjectId(_id)}, data)
     return redirect(url_for("employees"))
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
 
     
