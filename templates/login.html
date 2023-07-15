@@ -36,11 +36,18 @@
                                             </g>
                                         </g>
                                     </svg>
-                                    <h2 class="brand-text text-primary ml-1">Go4Dialer</h2>
+                                    <h2 class="brand-text text-primary ml-1">Manaya Associates</h2>
                                 </a>
 
 
                                 <form class="auth-login-form mt-2" action="/login" method="POST">
+                                    <div class="form-group">
+                                        <label class="form-label" for="user-role">Role</label>
+                                        <select id="user-role" class="form-control" name="role">
+                                            <option value="employee">Employee</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </div>
                                     <div class="form-group">
                                         <label for="login-email" class="form-label">Email</label>
                                         <input type="text" class="form-control" id="login-email" name="email" placeholder="john@example.com" aria-describedby="login-email" tabindex="1" autofocus />

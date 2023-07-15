@@ -56,3 +56,21 @@
         }
     });
 })(window);
+
+
+
+//updating employee data
+function update_employee(employee_data) {
+    console.log('this is the data we have received', employee_data)
+    $('#update-first-name').val(employee_data.first_name)
+    $('#update-last-name').val(employee_data.last_name)
+    $('#update-email').val(employee_data.email)
+    $('#update-mobile').val(employee_data.mobile)
+    $('#update-birthdate').val(employee_data.dob)
+    $('#update-designation').val(employee_data.designation)
+    $('#update-gender').val(employee_data.gender)
+    $('#update-status').val(employee_data.status)
+
+    $('#update-employee-id').val(employee_data._id)
+
+}

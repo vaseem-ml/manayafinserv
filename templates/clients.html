@@ -14,36 +14,38 @@
                                
                                 <div class="col-lg-12 col-xl-6 ">
                                     <div class="dataTables_length mb-1 ">
-                                    <form action="employees" method="POST">
+                                    <form action="clients" method="POST">
                                         <input type="search" class="custom-select form-control" placeholder="" name="search" style="width:30%">
                                         <button type="submit" class="btn btn-primary mr-1 data-submit waves-effect waves-float waves-light">Submit</button>
                                     </form>
                                     </div>
                                 </div>
+                                {% if user.role=='employee' %}
                                 <div class="col-lg-12 col-xl-6 pl-xl-75 pl-0">
                                     <div class="dt-action-buttons text-xl-right text-lg-left text-md-right text-left d-flex align-items-center justify-content-lg-end align-items-center flex-sm-nowrap flex-wrap mr-1">
                                         <div class="dt-buttons btn-group flex-wrap">
                                             <button class="btn add-new btn-primary mt-50 mb-1" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-toggle="modal" data-target="#modals-slide-in">
-                                                <span>Add New Employee</span>
+                                                <span>Add New Client</span>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
+                                {% endif %}
                             <div class="table-responsive">
                                 <table class="table table-hover-animation">
                                     <thead>
                                         <tr>
                                             <th>Sr.</th>
                                             <th>Name</th>
-                                            <th>Designation</th>
                                             <th>Date Of birth</th>
                                             <th>Email</th>
-                                            <th>Status</th>
+                                            <th>Mobile</th>
+                                            <th>Employee</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for user in users %}
+                                        {% for user in clients %}
                                         <tr>
                                             <td>
                                                 <span class="font-weight-bold">{{ loop.index }}</span>
@@ -51,17 +53,11 @@
                                             <td>
                                                 <span class="font-weight-bold">{{ user.first_name+" "+user.last_name }}</span>
                                             </td>
-                                            <td>{{ user.designation }}</td>
                                             <td>{{ user.dob }}</td>
                                             <td>{{ user.email }}</td>
-                                            <td>
-                                                {% if user.status %}
-                                                    <span class="badge badge-pill badge-light-success mr-1">Active</span>
-                                                {% else %}
-                                                    <span class="badge badge-pill badge-light-danger mr-1">Inactive</span>
-                                                {% endif %}
-                                                
-                                            </td>
+                                            <td>{{ user.mobile }}</td>
+                                            <td>{{ user.employee }}</td>
+                                            
                                             <td>
                                                 <div class="row">
                                                     <a href="/delete-employee/{{ user._id }}">
@@ -72,10 +68,15 @@
                                                     <button class='btn btn-primary btn-sm' 
                                                             type='button' 
                                                             data-toggle="modal" 
-                                                            data-target="#update-employee" 
-                                                            onclick='update_employee({{ user|tojson|safe }})'>
+                                                            data-target="#update-client" 
+                                                            onclick='update_client({{ user|tojson|safe }})'>
                                                         <i data-feather='edit'></i>
                                                     </button>
+                                                    <a href="/client-details/{{ user._id }}">
+                                                        <button class='btn btn-success btn-sm ml-1'>
+                                                            <i data-feather='eye'></i>
+                                                        </button>
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -87,11 +88,11 @@
                     </div>
                 </div>
             </section>
-            {% include "components/add_employee.html" %}
-            {% include "components/edit_employee.html" %}
+            {% include "components/add_client.html" %}
+            {% include "components/edit_client.html" %}
         </div>
     </div>
 </div>
-<input type="hidden" id="activeSideBar" value="employees" />
+<input type="hidden" id="activeSideBar" value="clients" />
 {% include "footer.html" %}
     
