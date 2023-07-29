@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for, f
 from utils.helper import hash_password
 import datetime
 # import ast
-from src.services.db import User, Client, Admin
+from src.services.db import User, Client, Admin, Bank, Card, UserCard
 import bson
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 import bcrypt
@@ -11,6 +11,10 @@ import bcrypt
 user = User()
 clients = Client()
 admins = Admin()
+banks = Bank()
+cards = Card()
+user_cards = UserCard()
+
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = "manaya-finserve"
@@ -106,7 +110,6 @@ def login():
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
-    print('Now home Running++++++++============')
     return render_template('home.html', user=current_user)
 
 
@@ -141,19 +144,16 @@ def get_clients():
 
 
     clients_data = clients.get_clients(cond)
+    
+
     all_data = []
-    # for test in clients_data:
-    #     print('test++++++=======', test)
-    # clients_data = list(clients_data)
+
 
     for index, user_ in enumerate(clients_data):
         user_['_id'] = str(user_['_id'])
         user_['employee'] = str(user_['employee'])
-        print('this is user', user_)
         all_data.append(user_)
-        # break
     return render_template('clients.html', clients=all_data, user=current_user)
-
 
 @app.route('/add-client', methods=['POST'])
 @login_required
@@ -186,21 +186,93 @@ def add_client():
 
 @app.route('/client-details/<string:id>', methods=['GET'])
 def get_client(id):
-    print('this is id+++++=========', id)
+    
     client_detail = clients.find_client({'_id': bson.ObjectId(id)})
+
     if not client_detail:
         flash('Client not found:error',)
         return redirect(url_for('get_clients'))
+    
+
+    
+    banks_data = banks.get_bank_with_cards()
+    # print('this is banks data', list(banks_data))
+    banks_data = list(banks_data)
+    users_data = user.get_users()
+    users_data = list(users_data)
+    for index, bank_ in enumerate(banks_data):
+        banks_data[index]['_id'] = str(bank_['_id'])
+
+    client_cards = user_cards.get_client_cards({"client": bson.ObjectId(id)})
+    # for index, client_card in enumerate(client_cards):
+        
+    
+
+    # print('this is client detail', list(client_cards))
 
 
-    return render_template('components/client_details.html', client=client_detail, user=current_user)
 
+    return render_template('components/client_details.html', 
+                           client=client_detail, 
+                           banks=banks_data,
+                           users = users_data,
+                           client_cards = client_cards,
+                           user=current_user)
 
+@app.route('/add-card', methods=['POST'])
+def add_card():
+    card = request.form["card"]
+    client = request.form["client"]
+    status = request.form["status"]
+    employees = request.form.getlist('employees')
+    
+    users=[]
+    for employee in employees:
+        users.append({'employee': bson.ObjectId(employee)})
+    
+    data = {
+        'card': bson.ObjectId(card),
+        'client': bson.ObjectId(client),
+        'status': status,
+        'employees': users,
+        'createdAt': datetime.datetime.now(), 
+        'updatedAt': datetime.datetime.now(), 
+    }
+    user_cards.create_user_card(data)
+    return redirect(url_for("get_clients"))
 
 
 @app.route('/reports', methods=['GET', 'POST'])
+@login_required
 def reports():
-    return render_template('reports.html', user=current_user)
+    cond={}
+    if request.method == 'POST':
+        search = request.form["search"]
+        from_ = request.form["from"]
+        to = request.form["to"]
+        card = request.form["card"]
+        if search:
+            cond['search'] = search
+
+    get_default_cards = cards.get_cards()
+    get_default_cards = list(get_default_cards)
+
+    data = {
+        "cards": get_default_cards
+    }
+
+    if current_user.role=='employee':
+        cond["$expr"] = {
+                "$in": [bson.ObjectId(current_user.id), "$employees.employee"],
+            },
+    client_cards = user_cards.get_all_cards(cond)
+
+
+    
+
+
+    client_cards = list(client_cards)
+    return render_template('reports.html', cards = client_cards, data=data, user=current_user)
 
 
 @app.route('/add-employee', methods=['POST'])
@@ -267,6 +339,140 @@ def edit_employee():
 
     user.update_user({'_id': bson.ObjectId(_id)}, data)
     return redirect(url_for("employees"))
+
+
+
+@app.route('/banks', methods=['GET', 'POST'])
+@login_required
+def get_banks():
+    cond= {}
+    if request.method == 'POST':
+        search = request.form["search"]
+        if search:
+            cond['search'] = search
+
+    banks_data = banks.get_banks(cond)
+
+    banks_data = list(banks_data)
+    for index, bank_ in enumerate(banks_data):
+        banks_data[index]['_id'] = str(bank_['_id'])
+    return render_template('banks.html', banks=banks_data, user=current_user)
+
+@app.route('/add-bank', methods=['POST'])
+def add_bank():
+    name = request.form["name"]
+    status = request.form["status"]
+    
+    bank_ = banks.find_bank({'name': name})
+    if bank_:
+        flash('Bank alreay exists!!!:error',)
+        return redirect(url_for('get_banks'))
+    data = {
+        'name': name,
+       
+        'status': int(status),
+        
+        'createdAt': datetime.datetime.now(), 
+        'updatedAt': datetime.datetime.now(), 
+    }
+    banks.create_bank(data)
+    return redirect(url_for("get_banks"))
+
+
+@app.route('/edit-bank', methods=['POST'])
+def edit_bank():
+    try:
+        _id = request.form['_id']
+        name = request.form["name"]
+
+        status = request.form["status"]
+        
+        data = {
+            'first_name': name,
+
+
+            'status': int(status),
+
+            'updatedAt': datetime.datetime.now(), 
+        }
+
+        banks.update_bank({'_id': bson.ObjectId(_id)}, data)
+        return redirect(url_for("get_banks"))
+    except Exception as e:
+        flash(f'str{e}:error',)
+        return redirect(url_for('get_banks'))
+
+@app.route('/cards', methods=['GET', 'POST'])
+@login_required
+def get_cards():
+    cond= {}
+    if request.method == 'POST':
+        search = request.form["search"]
+        if search:
+            cond['search'] = search
+
+    cards_data = cards.get_cards(cond)
+
+    bank_data = banks.get_banks()
+    bank_data = list(bank_data)
+    for index, bank_ in enumerate(bank_data):
+        bank_data[index]['_id'] = str(bank_['_id'])
+
+    cards_data = list(cards_data)
+    for index, card_ in enumerate(cards_data):
+        cards_data[index]['_id'] = str(card_['_id'])
+    print('these are cards', cards_data)
+    
+    return render_template('cards.html', cards=cards_data,banks=bank_data, user=current_user)
+
+@app.route('/add-bank-card', methods=['POST'])
+def add_bank_card():
+    name = request.form["name"]
+    bank = request.form["bank"]
+    status = request.form["status"]
+    
+    card_ = cards.find_card({'name': name})
+    if card_:
+        flash('card alreay exists!!!:error',)
+        return redirect(url_for('get_cards'))
+    data = {
+        'name': name,
+        'bank': bson.ObjectId(bank),
+        'status': int(status),
+        
+        'createdAt': datetime.datetime.now(), 
+        'updatedAt': datetime.datetime.now(), 
+    }
+    cards.create_card(data)
+    return redirect(url_for("get_cards"))
+
+
+@app.route('/edit-bank-card', methods=['POST'])
+def edit_card():
+    try:
+        _id = request.form['_id']
+        bank = request.form['bank']
+        name = request.form["name"]
+
+        status = request.form["status"]
+        
+        data = {
+            'first_name': name,
+            'bank': bson.ObjectId(bank),
+
+            'status': int(status),
+
+            'updatedAt': datetime.datetime.now(), 
+        }
+
+        cards.update_card({'_id': bson.ObjectId(_id)}, data)
+        return redirect(url_for("get_cards"))
+    except Exception as e:
+        flash(f'str{e}:error',)
+        return redirect(url_for('get_cards'))
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

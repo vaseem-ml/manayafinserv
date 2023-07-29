@@ -1,0 +1,29 @@
+<div class="modal modal-slide-in new-user-modal fade" id="update-bank">
+    <div class="modal-dialog">
+        <form class="add-new-user modal-content pt-0" novalidate="novalidate" action="/edit-bank" method="POST">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" id="exampleModalLabel">Update Bank</h5>
+            </div>
+            <div class="modal-body flex-grow-1">
+                <div class="form-group">
+                    <label class="form-label" for="basic-icon-default-fullname">Bank</label>
+                    <input type="text" class="form-control dt-full-name"  placeholder="Enter your first name" name="name" id="update-name"  />
+                </div>
+                
+                
+                <div class="form-group">
+                    <label class="form-label" for="user-role">Active</label>
+                    <select  class="form-control" name="status" id="update-status">
+                        <option value=1>Yes</option>
+                        <option value=0>No</option>
+                    </select>
+                </div>
+                <input type="hidden" id="update-bank-id" name="_id"/>
+
+                <button type="submit" class="btn btn-primary mr-1 data-submit">Submit</button>
+                <button type="reset" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

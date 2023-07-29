@@ -1,16 +1,16 @@
 
-<div class="modal modal-slide-in new-user-modal fade" id="add-card">
+<div class="modal modal-slide-in new-user-modal fade" id="edit-card">
     <div class="modal-dialog">
-        <form class="add-new-user modal-content pt-0" novalidate="novalidate" action="/add-card" method="POST">
+        <form class="add-new-user modal-content pt-0" novalidate="novalidate" action="/edit-card" method="POST">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
             <div class="modal-header mb-1">
-                <h5 class="modal-title" id="exampleModalLabel">New Card</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit Card</h5>
             </div>
             <div class="modal-body flex-grow-1">
 
                 <div class="form-group">
                     <label class="form-label" for="user-role">Bank | Card Type</label>
-                    <select id="user-role" class="form-control" name="card">
+                    <select id="user-role" class="form-control" name="card" id="client_selected_card">
                         {% for bank in banks %}
                             <option value="{{ bank.cards._id}}">{{ bank.name }} || {{ bank.cards.name }}</option>
                         {% endfor %}
@@ -21,7 +21,7 @@
 
                 <div class="form-group">
                     <label class="form-label" for="user-role">Employees</label>
-                    <select id="user-role" class="form-control" name="employees" multiple>
+                    <select id="user-role" class="form-control" name="employees" id="update-employee-test" multiple>
                         {% for user_ in users %}
                             {% if user.id==user_._id %}
                                 <option value="{{user_._id}}">Me</option>

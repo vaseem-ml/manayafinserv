@@ -74,3 +74,22 @@ function update_employee(employee_data) {
     $('#update-employee-id').val(employee_data._id)
 
 }
+
+function update_bank(bank_data) {
+    $('#update-name').val(bank_data.name)
+    
+    $('#update-status').val(bank_data.status)
+
+    $('#update-bank-id').val(bank_data._id)
+
+}
+
+function update_client_card(client_card_data) {
+    console.log('client card data', client_card_data)
+    const selectedEmployeeIds = client_card_data.employees.map(employee => employee._id);
+    console.log('selecteed cards', selectedEmployeeIds)
+    $('#update-employee-test').val(selectedEmployeeIds);
+    
+
+
+}

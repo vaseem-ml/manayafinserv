@@ -1,0 +1,97 @@
+{% include "header.html" %}
+<div class="app-content content ">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper">
+        <div class="content-header row">
+        </div>
+        <div class="content-body">
+            <section class="app-user-list">
+                <div class="row" id="table-hover-animation">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="d-flex justify-content-between align-items-center header-actions mx-1 row mt-75">
+                               
+                                <div class="col-lg-12 col-xl-6 ">
+                                    <div class="dataTables_length mb-1 ">
+                                    <form action="cards" method="POST">
+                                        <input type="search" class="custom-select form-control" placeholder="" name="search" style="width:30%">
+                                        <button type="submit" class="btn btn-primary mr-1 data-submit waves-effect waves-float waves-light">Submit</button>
+                                    </form>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-xl-6 pl-xl-75 pl-0">
+                                    <div class="dt-action-buttons text-xl-right text-lg-left text-md-right text-left d-flex align-items-center justify-content-lg-end align-items-center flex-sm-nowrap flex-wrap mr-1">
+                                        <div class="dt-buttons btn-group flex-wrap">
+                                            <button class="btn add-new btn-primary mt-50 mb-1" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-toggle="modal" data-target="#add-bank-card">
+                                                <span>Add New Card</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover-animation">
+                                    <thead>
+                                        <tr>
+                                            <th>Sr.</th>
+                                            <th>Name</th>
+                                            <th>Bank</th>
+                                            <th>Status</th>
+                                            <th>Created on</th>
+
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for card in cards %}
+                                        <tr>
+                                            <td>
+                                                <span class="font-weight-bold">{{ loop.index }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="font-weight-bold">{{ card.name }}</span>
+                                            </td>
+                                            <td>{{ card.bank.name }}</td>
+                                            <td>
+                                                {% if card.status %}
+                                                    <span class="badge badge-pill badge-light-success mr-1">Active</span>
+                                                {% else %}
+                                                    <span class="badge badge-pill badge-light-danger mr-1">Inactive</span>
+                                                {% endif %}
+                                                
+                                            </td>
+                                            <td>{{ card.createdAt }}</td>
+
+                                            <td>
+                                                <div class="row">
+                                                    <a href="/delete-card/{{ card._id }}">
+                                                        <button class='btn btn-danger btn-sm mr-1 confirm-delete'>
+                                                            <i data-feather='trash-2'></i>
+                                                        </button>
+                                                    </a>
+                                                    <button class='btn btn-primary btn-sm' 
+                                                            type='button' 
+                                                            data-toggle="modal" 
+                                                            data-target="#update-card" 
+                                                            onclick='update_card({{ card|tojson|safe }})'>
+                                                        <i data-feather='edit'></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% include "components/add_bank_card.html" %}
+            {% include "components/edit_bank_card.html" %}
+        </div>
+    </div>
+</div>
+<input type="hidden" id="activeSideBar" value="cards" />
+{% include "footer.html" %}
+    
