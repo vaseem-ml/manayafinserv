@@ -15,22 +15,22 @@
                             <option value="{{ bank.cards._id}}">{{ bank.name }} || {{ bank.cards.name }}</option>
                         {% endfor %}
                     </select>
-
+ 
                     
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="user-role">Employees</label>
-                    <select id="user-role" class="form-control" name="employees" multiple>
-                        {% for user_ in users %}
-                            {% if user.id==user_._id %}
-                                <option value="{{user_._id}}">Me</option>
-                            {% else %}
-                                <option value="{{ user_._id }}">{{ user_.first_name }} {{ user_.last_name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
+                    {% for user_ in users %}
+                        <div class="custom-control custom-control-success custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="employees" id="{{ user_._id }}" value="{{ user_._id }}"/>
+                            <label class="custom-control-label" for="{{ user_._id }}" style="text-transform: uppercase;">{{ user_.first_name }} {{ user_.last_name }}</label>
+                        </div>
+                    {% endfor %}
+
+                        
                 </div>
+
 
                 <div class="form-group">
                     <label class="form-label" for="user-role">Status</label>

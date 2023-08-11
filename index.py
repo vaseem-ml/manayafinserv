@@ -110,7 +110,7 @@ def login():
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
-    return render_template('home.html', user=current_user)
+    return render_template('userview.html', user=current_user)
 
 
 @app.route('/employees', methods=['GET', 'POST'])
@@ -225,6 +225,8 @@ def add_card():
     client = request.form["client"]
     status = request.form["status"]
     employees = request.form.getlist('employees')
+
+    print('these are the employees', employees)
     
     users=[]
     for employee in employees:
@@ -240,6 +242,32 @@ def add_card():
     }
     user_cards.create_user_card(data)
     return redirect(url_for("get_clients"))
+
+
+
+@app.route('/edit-card', methods=['POST'])
+def edit_user_card():
+    card = request.form["card"]
+    _id = request.form['edit_card_id']
+    #client = request.form["client"]
+    status = request.form["status"]
+    employees = request.form.getlist('employees')
+
+    users=[]
+    for employee in employees:
+        users.append({'employee': bson.ObjectId(employee)})
+    
+    data = {
+        'card': bson.ObjectId(card),
+        #'client': bson.ObjectId(client),
+        'status': status,
+        'employees': users,
+        #'createdAt': datetime.datetime.now(), 
+        'updatedAt': datetime.datetime.now(), 
+    }
+    user_cards.update_user_card({'_id': bson.ObjectId(_id)}, data)
+    return redirect(url_for("get_clients"))
+
 
 
 @app.route('/reports', methods=['GET', 'POST'])

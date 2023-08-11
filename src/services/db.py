@@ -349,6 +349,10 @@ class UserCard:
     def create_user_card(self, data):
         result = self.user_cards.insert_one(data)
         return result
+    
+    def update_user_card(self, cond, data):
+        result = self.user_cards.update_one(cond, {"$set": data})
+        return result
 
     def find_card(self, cond={}):
         result = self.user_cards.find_one(cond)

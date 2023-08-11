@@ -61,7 +61,6 @@
 
 //updating employee data
 function update_employee(employee_data) {
-    console.log('this is the data we have received', employee_data)
     $('#update-first-name').val(employee_data.first_name)
     $('#update-last-name').val(employee_data.last_name)
     $('#update-email').val(employee_data.email)
@@ -85,10 +84,16 @@ function update_bank(bank_data) {
 }
 
 function update_client_card(client_card_data) {
-    console.log('client card data', client_card_data)
-    const selectedEmployeeIds = client_card_data.employees.map(employee => employee._id);
-    console.log('selecteed cards', selectedEmployeeIds)
-    $('#update-employee-test').val(selectedEmployeeIds);
+    console.log('this is client data', client_card_data)
+    $('input[type="checkbox"]').prop('checked', false);
+    
+    for (var i=0; i<client_card_data['employees'].length; i++) {
+        console.log('this is id ',client_card_data['employees'][i]['_id'])
+        $('#'+client_card_data['employees'][i]['_id']+"_").prop('checked', true);
+    }
+
+    $('#edit_card_status').val(client_card_data.status);
+    $('#edit_card_id').val(client_card_data._id)
     
 
 
