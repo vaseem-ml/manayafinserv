@@ -1,3 +1,4 @@
+from pydoc import cli
 from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
 from utils.helper import hash_password
 import datetime
@@ -96,8 +97,6 @@ def login():
             flash('Invalid username password combination:error')
             return redirect(url_for('login'))
         
-        print('everything going good++++++++++++++===============', user_)
-
         user_obj = User_(user_["_id"], user_['first_name'], user_['role'])
 
         login_user(user_obj)
@@ -110,7 +109,91 @@ def login():
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
-    return render_template('userview.html', user=current_user)
+
+
+    emp_cond = []
+    from_= None
+    to_ = None
+
+    cond = {}
+    
+    if request.method=='POST':
+        emp_cond = request.form.getlist('employees')
+        emp_cond = [bson.ObjectId(_id) for _id in emp_cond]
+        if len(emp_cond):
+            cond['employees.employee'] = {'$in': emp_cond}
+
+        from_ = request.form["from"]
+        to_ = request.form["to"]
+        print('this is from_', from_)
+        if from_:
+            from_ = datetime.datetime.strptime(from_, '%Y-%m-%d')
+            cond['createdAt'] = {'$gte': from_}
+        if to_:
+            to_ = datetime.datetime.strptime(to_, '%Y-%m-%d')
+            cond['createdAt'] = {'$lte': to_}
+
+
+    users_data = user.get_users()
+    users_data = list(users_data)
+
+    
+    client_cards = user_cards._get_all_cards(cond)
+
+    total_clients = clients.get_all_clients({})
+    total_products = cards.get_all_cards({})
+    total_employees = user.get_users({})
+    employees = []
+
+    if len(emp_cond):
+        for _emp_cond in emp_cond:
+            get_user_detail = user.find_user({'_id': _emp_cond})
+            employees.append({'first_name': get_user_detail['first_name'], 'cards': 0})
+    else:
+        for employee in total_employees:
+            employees.append({'first_name': employee['first_name'], 'cards': 0})
+
+    total_clients = len(list(total_clients))
+    total_products = len(list(total_products))
+    total_credit_card_made = len(list(client_cards))
+
+    #get data for donut chart
+    get_employee_cards_data=None
+    if len(emp_cond):
+        get_employee_cards_data = user_cards.get_client_cards({'employees.employee': {'$in': emp_cond}})
+    else:
+        get_employee_cards_data = user_cards.get_client_cards({})
+
+    get_employee_cards_data = list(get_employee_cards_data)
+
+    for card in get_employee_cards_data:
+        for emp_card in card['employees']:
+            for employee in employees:
+                if employee['first_name'] == emp_card['first_name']:
+                    employee['cards']+= 1 / len(card['employees'])
+
+
+    total_employees = len(employees)
+
+
+    emp_names = []
+    emp_score = []
+
+    for _emp in employees:
+        # if _emp['cards']>0:
+        emp_names.append(_emp['first_name'].upper())
+        emp_score.append(_emp['cards'])
+
+    return render_template('home.html', 
+                           user=current_user, 
+                           users = users_data,
+                           total_clients = total_clients,
+                           cards_made = total_credit_card_made,
+                           total_employees = total_employees,
+                           total_products = total_products,
+                           emp_names = emp_names,
+                           emp_score = emp_score
+                           )
 
 
 @app.route('/employees', methods=['GET', 'POST'])
@@ -154,6 +237,113 @@ def get_clients():
         user_['employee'] = str(user_['employee'])
         all_data.append(user_)
     return render_template('clients.html', clients=all_data, user=current_user)
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+
+    user_ = user.find_user({"_id": bson.ObjectId(current_user.id)})
+
+    print('this is current user', current_user)
+
+
+    return render_template('userview.html', userData = user_, user=current_user)
+
+@app.route('/password-change', methods=['POST'])
+def password_change():
+    password = request.form["password"]
+    confirm_password = request.form['confirm-password']
+    if password!=confirm_password:
+        flash('password does not match',)
+        return redirect(url_for('profile'))
+    
+    hashed_password = hash_password(password)
+
+    user.update_user({'_id': bson.ObjectId(current_user.id)}, {"password": hashed_password})
+    flash('password changed succesfully',)
+    
+    return redirect(url_for('profile'))
+    
+
+@app.route('/employee-page/<string:id>', methods=['GET', 'POST'])
+def employee_page(id):
+    if request.method=='POST':
+
+        first_name = request.form["first_name"]
+        last_name = request.form["last_name"]
+        mobile = request.form["mobile"]
+        salary = request.form["salary"]
+        designation = request.form["designation"]
+        company = request.form["company"]
+        email = request.form["email"]
+
+
+        if email:
+            client_detail = clients.find_client({'email': email})
+            if client_detail:
+                flash('Email already exists:error')
+                return redirect(url_for('employee_page', id=id))
+
+        else:
+            flash('Please pass email:error')
+            return redirect(url_for('employee_page', id=id))
+
+
+        
+        if mobile:
+            client_detail = clients.find_client({'mobile': mobile})
+            if client_detail:
+                flash('Mobile already exists:error')
+                return redirect(url_for('employee_page', id=id))
+
+
+        else:
+            flash('Please pass mobile:error')
+            return redirect(url_for('employee_page', id=id))
+
+
+        if not first_name:
+            flash('Please pass first name:error')
+            return redirect(url_for('employee_page', id=id))
+
+        
+        if salary:
+            salary = int(salary)
+
+
+        data = {
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'mobile': mobile,
+            'salary': salary,
+            'designation': designation,
+            'company': company,
+            'employee': bson.ObjectId(id),
+            'createdAt': datetime.datetime.now(),
+            'updatedAt': datetime.datetime.now(),
+
+        }
+
+        created_client = clients.create_client(data)
+        if created_client:
+            flash('Congratulations!!! Successfully added:success')
+            return redirect(url_for('employee_page', id=id))
+
+            pass
+
+        
+        
+        
+        return redirect(url_for("employee_page", id=id))
+    if request.method=='GET':
+        return render_template('employee_page.html', user = id)
+
+
+
+
+
 
 @app.route('/add-client', methods=['POST'])
 @login_required
@@ -249,7 +439,8 @@ def add_card():
 def edit_user_card():
     card = request.form["card"]
     _id = request.form['edit_card_id']
-    #client = request.form["client"]
+    client = request.form["client"]
+    print('this is client', client)
     status = request.form["status"]
     employees = request.form.getlist('employees')
 
@@ -266,7 +457,7 @@ def edit_user_card():
         'updatedAt': datetime.datetime.now(), 
     }
     user_cards.update_user_card({'_id': bson.ObjectId(_id)}, data)
-    return redirect(url_for("get_clients"))
+    return redirect(url_for(f"get_client", id=client))
 
 
 

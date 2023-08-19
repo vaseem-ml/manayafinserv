@@ -16,6 +16,8 @@
 
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/vendors/css/vendors.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/vendors/css/charts/apexcharts.css') }}">
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css') }}">
@@ -30,6 +32,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/css/themes/bordered-layout.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/css/themes/semi-dark-layout.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/vendors/css/extensions/toastr.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/css/pages/dashboard-ecommerce.css') }}">
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
@@ -148,6 +151,12 @@
                     <a class="d-flex align-items-center" href="/clients">
                         <i data-feather="home"></i>
                         <span class="menu-title text-truncate" data-i18n="clients">Clients</span>
+                    </a>
+                </li>
+                <li class=" nav-item" id="profile">
+                    <a class="d-flex align-items-center" href="/profile">
+                        <i data-feather="home"></i>
+                        <span class="menu-title text-truncate" data-i18n="reports">Profile</span>
                     </a>
                 </li>
                 {% if user.role=='admin' %}

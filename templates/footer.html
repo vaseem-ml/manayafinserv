@@ -25,6 +25,8 @@
 
     <!-- BEGIN: Theme JS-->
     <script src="{{ url_for('static', filename='app-assets/js/core/app-menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='app-assets/vendors/js/charts/apexcharts.min.js') }}"></script>
+
     <script src="{{ url_for('static', filename='app-assets/js/core/app.js') }}"></script>
     <script src="{{ url_for('static', filename='app-assets/js/script.js') }}"></script>
     <!-- END: Theme JS-->
@@ -33,6 +35,9 @@
     <script src="{{ url_for('static', filename='app-assets/js/scripts/pages/app-user-list.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='app-assets/js/scripts/pages/dashboard-ecommerce.js') }}"></script>
+    <script src="{{ url_for('static', filename='app-assets/js/scripts/charts/chart-apex.js') }}"></script>
+
     <!-- END: Page JS-->
 
     <script>
@@ -45,13 +50,10 @@
             }
         })
 
-        mobiscroll.select('#multiple-select', {
-            inputElement: document.getElementById('my-input'),
-            touchUi: false
-        });
-
         
     </script>
+
+    
     {%- with messages = get_flashed_messages() %}
     {% if messages %}
         {% for message in messages %}

@@ -68,6 +68,10 @@ class Client:
     def delete_client(self, cond):
         result = self.clients.delete_one(cond)
         return result
+    
+    def get_all_clients(self, cond):
+        result = self.clients.find(cond)
+        return result
 
     def get_clients(self, cond={}):
         
@@ -278,6 +282,10 @@ class Card:
     def delete_card(self, cond):
         result = self.cards.delete_one(cond)
         return result
+    
+    def get_all_cards(self, cond):
+        result = self.cards.find(cond)
+        return result
 
     def get_cards(self, cond={}):
         
@@ -471,6 +479,13 @@ class UserCard:
         result = self.user_cards.aggregate(aggregation)
         return result
     
+
+    def _get_all_cards(self, cond):
+        print('this is condition', cond)
+        result = self.user_cards.find(cond)
+        return result
+
+
     def get_all_cards(self, cond):
 
         # cond={}

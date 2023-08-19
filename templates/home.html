@@ -1,4 +1,5 @@
 {% include "header.html" %}
+<!-- BEGIN: Content-->
 <div class="app-content content ">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
@@ -6,90 +7,127 @@
         <div class="content-header row">
         </div>
         <div class="content-body">
-            <section class="app-user-list">
-                <div class="row" id="table-hover-animation">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="d-flex justify-content-between align-items-center header-actions mx-1 row mt-75">
-                                <div class="col-lg-12 col-xl-6">
-                                    
+            <!-- Dashboard Ecommerce Starts -->
+            <section id="dashboard-ecommerce">
+
+                <div class="row match-height">
+                    <div class="col-xl-12 col-md-12 col-12">
+                        <div class="card card-statistics">
+                            <div class="card-header">
+                                <h4 class="card-title"></h4>
+                                <div class="dt-action-buttons text-xl-right text-lg-left text-md-right text-left d-flex align-items-center justify-content-lg-end align-items-center flex-sm-nowrap flex-wrap mr-1">
+                                    <div class="dt-buttons btn-group flex-wrap">
+                                        <button class="btn add-new btn-primary mt-50 mb-1" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-toggle="modal" data-target="#dashboard-filter">
+                                            <span>Filter</span>
+                                        </button>
                                     </div>
-                                    <div class="col-lg-12 col-xl-6 pl-xl-75 pl-0">
-                                        <div class="dt-action-buttons text-xl-right text-lg-left text-md-right text-left d-flex align-items-center justify-content-lg-end align-items-center flex-sm-nowrap flex-wrap mr-1">
-                                            <div class="mr-1">
-                                                <div id="DataTables_Table_0_filter" class="dataTables_filter">
-                                                    <label>Search:<input type="search" class="form-control" placeholder="" aria-controls="DataTables_Table_0"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ Statistics Card -->
+                </div>
+
+                <div class="row match-height">
+                    <div class="col-xl-12 col-md-12 col-12">
+                        <div class="card card-statistics">
+                            <div class="card-header">
+                                <h4 class="card-title">Statistics</h4>
+                            </div>
+                            <div class="card-body statistics-body">
+                                <div class="row">
+                                    <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
+                                        <div class="media">
+                                            <div class="avatar bg-light-primary mr-2">
+                                                <div class="avatar-content">
+                                                    <i data-feather="trending-up" class="avatar-icon"></i>
                                                 </div>
                                             </div>
-                                            <div class="dt-buttons btn-group flex-wrap">
-                                                <button class="btn add-new btn-primary mt-50" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-toggle="modal" data-target="#modals-slide-in">
-                                                    <span>Add New User</span>
-                                                </button>
+                                            <div class="media-body my-auto">
+                                                <h4 class="font-weight-bolder mb-0">{{ cards_made }}</h4>
+                                                <p class="card-text font-small-3 mb-0">Cards</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
+                                        <div class="media">
+                                            <div class="avatar bg-light-info mr-2">
+                                                <div class="avatar-content">
+                                                    <i data-feather="user" class="avatar-icon"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body my-auto">
+                                                <h4 class="font-weight-bolder mb-0">{{ total_clients }}</h4>
+                                                <p class="card-text font-small-3 mb-0">Clients</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-sm-0">
+                                        <div class="media">
+                                            <div class="avatar bg-light-danger mr-2">
+                                                <div class="avatar-content">
+                                                    <i data-feather="box" class="avatar-icon"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body my-auto">
+                                                <h4 class="font-weight-bolder mb-0">{{ total_products }}</h4>
+                                                <p class="card-text font-small-3 mb-0">Credit Cards</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-sm-6 col-12">
+                                        <div class="media">
+                                            <div class="avatar bg-light-success mr-2">
+                                                <div class="avatar-content">
+                                                    <i data-feather="dollar-sign" class="avatar-icon"></i>
+                                                </div>
+                                            </div>
+                                            <div class="media-body my-auto">
+                                                <h4 class="font-weight-bolder mb-0">{{ total_employees }}</h4>
+                                                <p class="card-text font-small-3 mb-0">Employee</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            <div class="table-responsive">
-                                <table class="table table-hover-animation">
-                                    <thead>
-                                        <tr>
-                                            <th>Project</th>
-                                            <th>Client</th>
-                                            <th>Users</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <img src="{{ url_for('static', filename='app-assets/images/icons/angular.svg') }}" class="mr-75" height="20" width="20" alt="Angular" />
-                                                <span class="font-weight-bold">Angular Projectttt</span>
-                                            </td>
-                                            <td>Peter Charls</td>
-                                            <td>
-                                                <div class="avatar-group">
-                                                    <div data-toggle="tooltip" data-popup="tooltip-custom" data-placement="top" title="" class="avatar pull-up my-0" data-original-title="Lilian Nenez">
-                                                        <img src="{{ url_for('static', filename='app-assets/images/portrait/small/avatar-s-5.jpg') }}" alt="Avatar" height="26" width="26" />
-                                                    </div>
-                                                    <div data-toggle="tooltip" data-popup="tooltip-custom" data-placement="top" title="" class="avatar pull-up my-0" data-original-title="Alberto Glotzbach">
-                                                        <img src="{{ url_for('static', filename='app-assets/images/portrait/small/avatar-s-6.jpg') }}" alt="Avatar" height="26" width="26" />
-                                                    </div>
-                                                    <div data-toggle="tooltip" data-popup="tooltip-custom" data-placement="top" title="" class="avatar pull-up my-0" data-original-title="Alberto Glotzbach">
-                                                        <img src="{{ url_for('static', filename='app-assets/images/portrait/small/avatar-s-7.jpg') }}" alt="Avatar" height="26" width="26" />
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge badge-pill badge-light-primary mr-1">Active</span></td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown">
-                                                        <i data-feather="more-vertical"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="javascript:void(0);">
-                                                            <i data-feather="edit-2" class="mr-50"></i>
-                                                            <span>Edit</span>
-                                                        </a>
-                                                        <a class="dropdown-item" href="javascript:void(0);">
-                                                            <i data-feather="trash" class="mr-50"></i>
-                                                            <span>Delete</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>
+                    <!--/ Statistics Card -->
+                </div>
+
+                <div class="row match-height">
+                    <div class="col-lg-6 col-12">
+                        <div class="row match-height">
+                            <!-- Goal Overview Card -->
+                            <div class="col-xl-12 col-12">
+                                <div class="card">
+                                    <div class="card-header flex-column align-items-start">
+                                        <h4 class="card-title mb-75">Cards</h4>
+                                        <span class="card-subtitle text-muted">Data on employees</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="donut-chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/ Goal Overview Card -->
+                        </div>
+                    </div>
+
                 </div>
             </section>
+            {% include "components/dashboard_filter.html" %}
+            <!-- Dashboard Ecommerce ends -->
+
         </div>
     </div>
 </div>
+<!-- END: Content-->
 <input type="hidden" id="activeSideBar" value="home" />
+<script>
+    var emp_names = {{ emp_names | tojson }};
+    var emp_score = {{ emp_score | tojson }};
+</script>
 {% include "footer.html" %}
+
     
